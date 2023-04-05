@@ -1,0 +1,23 @@
+{
+  "name": "q-a-sdc",
+  "version": "1.0.0",
+  "description": "Database for the FEC project",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "Q-A-Gemli-SDC"
+  },
+  "author": "Kyle Bradford",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "node": "^19.8.1",
+    "nodemon": "^2.0.22",
+    "pg": "^8.10.0"
+  }
+}
