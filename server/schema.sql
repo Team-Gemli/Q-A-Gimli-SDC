@@ -42,4 +42,29 @@ CREATE TABLE answers_photos(
 
 \copy answers_photos(id,answer_id,url) FROM '/home/mrkorn/rfe2302/Gemli/answers_photos.csv' DELIMITER ',' CSV HEADER;
 
---"2018-08-18T00:00:00.00Z"
+ALTER TABLE questions RENAME COLUMN id TO question_id;
+ALTER TABLE questions RENAME COLUMN body TO question_body;
+ALTER TABLE questions RENAME COLUMN date_written TO question_date;
+ALTER TABLE questions RENAME COLUMN helpful TO question_helpfulness;
+
+
+-- Divide each column by 1000 to get seconds
+UPDATE questions SET question_date = question_date / 1000;
+
+-- Change column type text
+ALTER TABLE questions
+ALTER COLUMN question_date TYPE text;
+
+-- Update to date format
+UPDATE questions SET question_date = TO_TIMESTAMP(cast(question_date AS bigint))::date;
+
+
+
+UPDATE answers SET date_written = date_written / 1000;
+
+-- Change column type text
+ALTER TABLE answers
+ALTER COLUMN date_written TYPE text;
+
+-- Update to date format
+UPDATE answers SET date_written = TO_TIMESTAMP(cast(date_written AS bigint))::date;
