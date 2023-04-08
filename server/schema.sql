@@ -28,6 +28,14 @@ CREATE TABLE answers(
   REFERENCES questions(id)
 );
 
+CREATE SEQUENCE answers_id
+  START 10
+  INCREMENT 10
+  MINVALUE 10
+  OWNED BY answers.id;
+
+SELECT setval(pg_get_serial_sequence('answers', 'id'), (SELECT MAX(id) FROM answers));
+
 CREATE TABLE answers_photos(
   id serial PRIMARY KEY,
   answer_id INT NOT NULL,
@@ -47,6 +55,13 @@ ALTER TABLE questions RENAME COLUMN body TO question_body;
 ALTER TABLE questions RENAME COLUMN date_written TO question_date;
 ALTER TABLE questions RENAME COLUMN helpful TO question_helpfulness;
 
+CREATE SEQUENCE seq_question_id
+  START 10
+  INCREMENT 10
+  MINVALUE 10
+  OWNED BY questions.question_id;
+
+SELECT setval(pg_get_serial_sequence('questions', 'question_id'), (SELECT MAX(id) FROM answers));
 
 -- Divide each column by 1000 to get seconds
 UPDATE questions SET question_date = question_date / 1000;
