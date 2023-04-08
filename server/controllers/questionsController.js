@@ -11,7 +11,6 @@ module.exports = {
   getQuestions: (req, res) => {
     models.questions.getQuestions((err, results) => {
       if (err) throw err;
-      console.log('suceeded')
       res.json(results);
     }, product_id)
   },
@@ -19,7 +18,6 @@ module.exports = {
   getAnswers: (req, res) => {
     models.questions.getAnswers((err, results) => {
       if (err) throw err;
-      console.log('suceeded')
       res.json(results);
     })
   },
@@ -35,12 +33,32 @@ module.exports = {
 
 
   submitQuestion: (req, res) => {
-    console.log(req.body)
     models.questions.submitQuestion(req.body, (err, results) => {
       if (err) {
         console.log(err);
       }
       res.json('Inserted question');
+    })
+  },
+
+  updateHelpfulnessAnswer: (req, res) => {
+    models.questions.updateHelpfulnessAnswer(req.params.id, (err, results)=> {
+      if (err) console.log(err);
+      res.json('updated Helpfulness')
+    })
+  },
+
+  updateHelpfulnessQuestion: (req, res) => {
+    models.questions.updateHelpfulnessQuestion(req.params.id, (err, results)=> {
+      if (err) console.log(err);
+      res.json('updated Helpfulness')
+    })
+  },
+
+  reportAnswer: (req, res) => {
+    models.questions.reportAnswer(req.params.id, (err, results)=> {
+      if (err) console.log(err);
+      res.json('updated Helpfulness')
     })
   },
 };

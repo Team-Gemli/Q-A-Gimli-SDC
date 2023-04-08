@@ -66,7 +66,6 @@ module.exports = {
 
 
   submitAnswer: (question_id, params, callback) => {
-    console.log(question_id, params);
     params.question_id = question_id;
     params.currentDate = new Date();
 
@@ -91,6 +90,39 @@ module.exports = {
     (product_id, question_body, question_date, asker_name, asker_email, reported, question_helpfulness)
     VALUES ($1, $2, current_date, $3, $4, false, 0);
     `,[product_id, body, name, email])
+    .then(res => {
+      callback(null, res);
+    })
+    .catch(err => callback(err));
+  },
+
+  updateHelpfulnessAnswer: (id, callback) => {
+    db.query(`
+    UPDATE answers
+    SET helpful = helpful + 1
+    WHERE id = $1;`, [id])
+    .then(res => {
+      callback(null, res);
+    })
+    .catch(err => callback(err));
+  },
+
+  updateHelpfulnessQuestion: (id, callback) => {
+    db.query(`
+    UPDATE questions
+    SET question_helpfulness = question_helpfulness + 1
+    WHERE question_id = $1;`, [id])
+    .then(res => {
+      callback(null, res);
+    })
+    .catch(err => callback(err));
+  },
+
+  reportAnswer: (id, callback) => {
+    db.query(`
+    UPDATE answers
+    SET reported = true
+    WHERE id = $1;`, [id])
     .then(res => {
       callback(null, res);
     })
