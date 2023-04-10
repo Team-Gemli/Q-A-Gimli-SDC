@@ -1,25 +1,33 @@
 let models = require('../models/model.js');
 
-let product_id = 37311;
-
-let question_id = 641997;
-
-let submitObj = {
-
-}
 module.exports = {
   getQuestions: (req, res) => {
-    models.questions.getQuestions((err, results) => {
+    //using a regex to get the product id out of the url
+    let url = req.url;
+    let regex = /product_id=(\d+)/;
+    let match = url.match(regex);
+    let productId = match && match[1];
+    models.questions.getQuestions((err, result) => {
       if (err) throw err;
-      res.json(results);
-    }, product_id)
+      let newObj = {};
+      newObj.product_id = productId;
+      newObj.results = result.rows;
+      res.json(newObj);
+    }, productId)
   },
 
   getAnswers: (req, res) => {
+    let url = req.url;
+    let regex = /\/questions\/(\d+)\//;
+    let match = url.match(regex);
+    let questionId = match && match[1];
     models.questions.getAnswers((err, results) => {
       if (err) throw err;
-      res.json(results);
-    })
+      let newObj = {};
+      newObj.question = questionId;
+      newObj.results = results.rows;
+      res.json(newObj);
+    }, questionId)
   },
 
   submitAnswer: (req, res) => {

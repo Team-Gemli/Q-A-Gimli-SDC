@@ -26,7 +26,6 @@ module.exports = {
             answers_photos.url)
             )) AS answers
 
-
     FROM questions
     INNER JOIN answers
     ON answers.question_id = questions.question_id
@@ -41,7 +40,7 @@ module.exports = {
       .catch(err => callback(err));
   },
 
-  getAnswers: (callback)=> {
+  getAnswers: (callback, question_id)=> {
     db.query(`
     SELECT
 
@@ -57,7 +56,8 @@ module.exports = {
         FROM answers
         INNER JOIN answers_photos
         ON answers_photos.answer_id = answers.id
-        LIMIT 100`
+        WHERE answers.question_id = $1
+        LIMIT 100`, [question_id]
         )
     .then(res => {
       callback(null, res)})
@@ -129,16 +129,3 @@ module.exports = {
     .catch(err => callback(err));
   }
 }
-// ALTER TABLE questions RENAME COLUMN id TO question_id;
-// ALTER TABLE questions RENAME COLUMN body TO question_body;
-// ALTER TABLE questions RENAME COLUMN date_written TO question_date;
-// ALTER TABLE questions RENAME COLUMN helpful TO question_helpfulness;
-
-// id serial PRIMARY KEY,
-// product_id INT NOT NULL,
-// body VARCHAR(255) NOT NULL,
-// date_written BIGINT NOT NULL,
-// asker_name VARCHAR(50) NOT NULL,
-// asker_email VARCHAR(50) NOT NULL,
-// reported BOOLEAN,
-// helpful INT

@@ -61,6 +61,11 @@ CREATE SEQUENCE seq_question_id
   MINVALUE 10
   OWNED BY questions.question_id;
 
+create index questions_index on questions(question_id);
+create index productsId_index on questions(product_id);
+create index answers_index on answers(id);
+create index answersQ_index on answers(question_id);
+
 SELECT setval(pg_get_serial_sequence('questions', 'question_id'), (SELECT MAX(id) FROM answers));
 
 -- Divide each column by 1000 to get seconds

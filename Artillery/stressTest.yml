@@ -1,0 +1,12 @@
+config:
+  target: http://localhost:3000
+  phases:
+  - name: QnA
+    duration: 60
+    arrivalCount: 1000
+scenarios:
+  - flow:
+      - get:
+          url: "/questions?product_id=10000&count=100"
+      - get:
+          url: "/questions/131221/answers?count=100"
