@@ -31,8 +31,11 @@ module.exports = {
     ON answers.question_id = questions.question_id
     INNER JOIN answers_photos
     ON answers_photos.answer_id = answers.id
-     WHERE product_id = $1
-     GROUP BY questions.question_id
+
+     WHERE questions.product_id = $1
+
+     GROUP BY product_id, questions.question_id
+     ORDER BY questions.question_date DESC
      LIMIT 100`, [id])
 
       .then(res => {

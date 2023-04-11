@@ -7,6 +7,4 @@ config:
 scenarios:
   - flow:
       - get:
-          url: "/questions?product_id=10000&count=100"
-      - get:
-          url: "/questions/131221/answers?count=100"
+          url: "/questions?product_id=37311&count=100"

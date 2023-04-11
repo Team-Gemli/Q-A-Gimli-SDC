@@ -61,6 +61,8 @@ CREATE SEQUENCE seq_question_id
   MINVALUE 10
   OWNED BY questions.question_id;
 
+CREATE INDEX coveringDate ON questions(question_id, product_id) INCLUDE (question_date);
+CREATE INDEX questions_answers on answers(question_id, id);
 create index questions_index on questions(question_id);
 create index productsId_index on questions(product_id);
 create index answers_index on answers(id);
