@@ -3,7 +3,7 @@ config:
   phases:
   - name: QnA
     duration: 60
-    arrivalCount: 1000
+    arrivalCount: 10000
 scenarios:
   - flow:
       - get:

@@ -10,7 +10,7 @@ const pool =  new Pool({
   port: process.env.PORT,
 })
 pool.connect((err) => {
-  if(err) { console.log(err) } else {
+  if(err) { console.log(err,'errr') } else {
     console.log("Connected to PostgreSQL");
   }
 })

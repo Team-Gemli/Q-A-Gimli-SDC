@@ -67,6 +67,7 @@ create index questions_index on questions(question_id);
 create index productsId_index on questions(product_id);
 create index answers_index on answers(id);
 create index answersQ_index on answers(question_id);
+CREATE INDEX answers_photos_answer_id_index ON answers_photos(answer_id);
 
 SELECT setval(pg_get_serial_sequence('questions', 'question_id'), (SELECT MAX(id) FROM answers));
 

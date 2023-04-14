@@ -4,39 +4,41 @@ module.exports = {
   getQuestions: (callback, id)=> {
     db.query(`
     SELECT
-
-  questions.question_id,
-  questions.product_id,
-  questions.question_body,
-  questions.question_date,
-  questions.asker_name,
-  questions.asker_email,
-  questions.reported,
-  questions.question_helpfulness,
-
-      json_object_agg(
-        answers.id, json_build_object(
-          'id', answers.id,
-          'body', answers.body,
-          'date_written', answers.date_written,
-          'answerer_name', answers.answerer_name,
-          'answerer_email', answers.answerer_email,
-          'helpful', answers.helpful,
-          'photos', json_build_array(
-            answers_photos.url)
-            )) AS answers
-
-    FROM questions
-    INNER JOIN answers
-    ON answers.question_id = questions.question_id
-    INNER JOIN answers_photos
-    ON answers_photos.answer_id = answers.id
-
-     WHERE questions.product_id = $1
-
-     GROUP BY product_id, questions.question_id
-     ORDER BY questions.question_date DESC
-     LIMIT 100`, [id])
+    questions.question_id,
+    questions.product_id,
+    questions.question_body,
+    questions.question_date,
+    questions.asker_name,
+    questions.asker_email,
+    questions.reported,
+    questions.question_helpfulness,
+    (
+      SELECT json_agg(answer)
+      FROM (
+        SELECT
+          answers.id,
+          answers.body,
+          answers.date_written,
+          answers.answerer_name,
+          answers.answerer_email,
+          answers.reported,
+          answers.helpful,
+          (
+            SELECT json_agg(photo)
+            FROM (
+              SELECT answers_photos.url
+              FROM answers_photos
+              WHERE answers_photos.answer_id = answers.id
+            ) photo
+          ) photos
+        FROM answers
+        WHERE answers.question_id = questions.question_id
+      ) answer
+    ) answers
+  FROM questions
+  WHERE questions.product_id = $1
+  ORDER BY questions.question_date DESC
+  LIMIT 100`, [id])
 
       .then(res => {
       callback(null, res)})
